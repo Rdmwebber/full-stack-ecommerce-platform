@@ -33,18 +33,21 @@ public class Division {
     @UpdateTimestamp
     private Date last_update;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id",nullable = false, insertable = false, updatable = false)
     private Country country;
 
-   // @Column(name = "country_id")
-   // private Long country_id;
+   //@Column(name = "country_id")
+   //private Long country_id;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "division")
     private Set<Customer> customers;
 
+    @Column(name = "country_id")
+    private Long country_id;
+
     public void setCountry(Country country) {
+        setCountry_id(country.getId());
         this.country = country;
     }
-
 }
