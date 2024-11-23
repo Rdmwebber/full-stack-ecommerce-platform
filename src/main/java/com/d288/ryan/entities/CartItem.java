@@ -2,18 +2,23 @@ package com.d288.ryan.entities;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "cart_item")
+@Table(name = "cart_items")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CartItem {
 
     @Id
@@ -26,7 +31,7 @@ public class CartItem {
     private Vacation vacation;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id" ,nullable = false, insertable = false, updatable = false)
     private Cart cart;
 
     @Column(name = "create_date")
@@ -38,5 +43,5 @@ public class CartItem {
     private Date last_update;
 
     @ManyToMany(cascade = CascadeType.ALL ,mappedBy = "cartItems")
-    private Set<Excursion> excursions;
+    private Set<Excursion> excursions =  new HashSet<>();
 }

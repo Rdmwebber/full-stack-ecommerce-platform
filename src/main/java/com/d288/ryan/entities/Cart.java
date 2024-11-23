@@ -1,7 +1,9 @@
 package com.d288.ryan.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,12 +11,16 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
+
 
 @Entity
 @Table(name = "carts")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cart {
 
     @Id
@@ -31,7 +37,7 @@ public class Cart {
     @Column(name = "party_size")
     private int party_size;
 
-    //@Column(name = "status")
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private StatusType status;
 
@@ -44,15 +50,28 @@ public class Cart {
     private Date last_update;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id" ,nullable = false, insertable = false, updatable = false)
     private Customer customer;
 
 
-    @OneToMany(mappedBy = "cart")
-    private Set<CartItem> cartItem;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
+    private Set<CartItem> cartItems =  new HashSet<>();
+
+    public void add (CartItem item) {
+        if (cartItems == null) {
+            cartItems = new HashSet<>();
+        }
+
+        cartItems.add(item);
+        item.setCart(this);
+    }
 
 
-    private enum StatusType { PENDING, ORDERED, CANCELED }
+    private enum StatusType { pending, ordered, canceled }
+
+    public void ordered(){
+        this.status = StatusType.ordered;
+    }
 
 
 }

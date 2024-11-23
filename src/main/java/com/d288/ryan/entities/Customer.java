@@ -1,14 +1,13 @@
 package com.d288.ryan.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.context.annotation.Primary;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -16,6 +15,8 @@ import java.util.Set;
 @Table(name="customers")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
 
     @Id
@@ -47,11 +48,21 @@ public class Customer {
     private Date last_update;
 
     @ManyToOne
-    @JoinColumn(name = "division_id")
+    @JoinColumn(name = "division_id" ,nullable = false, insertable = false, updatable = false)
     private Division division;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-    private Set<Cart> carts;
+    private Set<Cart> carts =  new HashSet<>();
+
+    public void add(Cart cart){
+        if (cart != null) {
+            if (carts == null) {
+                carts = new HashSet<>();
+            }
+
+            carts.add(cart);
+        }
+    }
 
 
 }

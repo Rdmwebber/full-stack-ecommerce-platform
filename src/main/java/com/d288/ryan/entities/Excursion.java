@@ -1,19 +1,24 @@
 package com.d288.ryan.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "excursions")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Excursion {
 
     @Id
@@ -39,12 +44,12 @@ public class Excursion {
     private Date last_update;
 
     @ManyToOne
-    @JoinColumn(name = "vacation_id")
+    @JoinColumn(name = "vacation_id" ,nullable = false, insertable = false, updatable = false)
     private Vacation vacation;
 
     @ManyToMany
     @JoinTable(name = "excursion_cartItem", joinColumns = @JoinColumn(name="excursion_id"), inverseJoinColumns = @JoinColumn(name= "cart_item_id"))
-    private Set<CartItem> cartItems;
+    private Set<CartItem> cartItems =  new HashSet<>();
 
 
 }

@@ -1,5 +1,6 @@
 package com.d288.ryan.services;
 
+import com.d288.ryan.dao.CartRepository;
 import com.d288.ryan.dao.CustomerRepository;
 import com.d288.ryan.dto.Purchase;
 import com.d288.ryan.dto.PurchaseResponse;
@@ -18,9 +19,11 @@ public class CheckoutServiceImpl implements CheckoutService{
 
 
     private CustomerRepository customerRepository;
+    private CartRepository cartRepository;
 
-    public CheckoutServiceImpl(CustomerRepository customerRepository) {
+    public CheckoutServiceImpl(CustomerRepository customerRepository, CartRepository cartRepository) {
         this.customerRepository = customerRepository;
+        this.cartRepository = cartRepository;
     }
 
     @Override
@@ -31,35 +34,39 @@ public class CheckoutServiceImpl implements CheckoutService{
 
         Cart cart = purchase.getCart();
 
+        // retrieve customer from dto
+
+        Customer customer = purchase.getCustomer();
+
+
         // generate tracking number
 
         String orderTrackingNumber = generateOrderTrackingNumber();
         cart.setOrderTrackingNumber(orderTrackingNumber);
 
-        System.out.println("SETTING TRACKING");
 
         // populate cart with cartItems
 
         Set<CartItem> cartItems = purchase.getCartItems();
         cartItems.forEach(item -> cart.add(item));
 
+        //populate cart with customer
+
+        cart.setCustomer(customer);
+
+        //add cart to customer
+
+        customer.add(cart);
+
+
         //change cart status
 
         cart.ordered();
-        System.out.println("ORDERED");
-
-        // populate customer with cart
-        //Customer customer = purchase.getCustomer();
-        Customer customer = cart.getCustomer();
-
-        customer.add(cart);
-        System.out.println("ABOUT TO SAVE");
-        System.out.println(customer);
 
         // save to db
         customerRepository.save(customer);
+        cartRepository.save(cart);
         // return response
-        System.out.println("BEFORe RETURN" + orderTrackingNumber);
         return new PurchaseResponse(orderTrackingNumber);
     }
 

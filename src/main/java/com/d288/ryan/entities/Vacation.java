@@ -1,11 +1,14 @@
 package com.d288.ryan.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import java.math.BigDecimal;
@@ -15,6 +18,8 @@ import java.util.Date;
 @Table(name = "vacations")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Vacation {
 
     @Id
@@ -43,6 +48,6 @@ public class Vacation {
     private Date last_update;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "vacation")
-    private Set<Excursion> excursions;
+    private Set<Excursion> excursions =  new HashSet<>();;
 
 }
