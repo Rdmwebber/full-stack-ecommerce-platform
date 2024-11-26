@@ -49,7 +49,7 @@ public class Excursion {
 
 
     @ManyToMany(cascade = CascadeType.ALL ,mappedBy = "excursions")
-    private Set<CartItem> cartitems =  new HashSet<>();
+    private Set<CartItem> cartItems =  new HashSet<>();
 
 
 }

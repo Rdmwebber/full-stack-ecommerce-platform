@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,6 +20,12 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Division {
+
+    public Division (Long division_id, Long country_id, String division_name){
+        this.country_id = country_id;
+        this.id =division_id;
+        this.division_name = division_name;
+    };
 
 
     @Id
@@ -43,7 +50,7 @@ public class Division {
 
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "division")
-    private Set<Customer> customers;
+    private Set<Customer> customers = new HashSet<>();
 
     @Column(name = "country_id")
     private Long country_id;
@@ -51,5 +58,9 @@ public class Division {
     public void setCountry(Country country) {
         setCountry_id(country.getId());
         this.country = country;
+    }
+
+    public void add (Customer customer) {
+        customers.add(customer);
     }
 }

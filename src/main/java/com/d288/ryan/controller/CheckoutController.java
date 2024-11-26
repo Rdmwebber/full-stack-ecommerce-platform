@@ -21,7 +21,7 @@ public class CheckoutController {
 
         PurchaseResponse purchaseResponse = checkoutService.placeOrder(purchase);
 
-        System.out.println("CheckoutReturn" + purchaseResponse);
+        //System.out.println("CheckoutReturn " + purchaseResponse);
         return purchaseResponse;
     }
 }
