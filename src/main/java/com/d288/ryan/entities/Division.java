@@ -41,8 +41,6 @@ public class Division {
     @JoinColumn(name = "country_id",nullable = false, insertable = false, updatable = false)
     private Country country;
 
-   //@Column(name = "country_id")
-   //private Long country_id;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "division")
     private Set<Customer> customers;

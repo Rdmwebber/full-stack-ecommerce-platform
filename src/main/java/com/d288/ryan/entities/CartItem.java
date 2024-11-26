@@ -31,7 +31,7 @@ public class CartItem {
     private Vacation vacation;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id" ,nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "cart_id" ,nullable = false)
     private Cart cart;
 
     @Column(name = "create_date")
@@ -42,6 +42,7 @@ public class CartItem {
     @UpdateTimestamp
     private Date last_update;
 
-    @ManyToMany(cascade = CascadeType.ALL ,mappedBy = "cartItems")
+    @ManyToMany
+    @JoinTable(name = "excursion_cartitem", joinColumns = @JoinColumn(name="cart_item_id"), inverseJoinColumns = @JoinColumn(name= "excursion_id"))
     private Set<Excursion> excursions =  new HashSet<>();
 }

@@ -34,6 +34,8 @@ public class CheckoutServiceImpl implements CheckoutService{
 
         Cart cart = purchase.getCart();
 
+        cart.setId(null);
+
         // retrieve customer from dto
 
         Customer customer = purchase.getCustomer();
@@ -48,7 +50,10 @@ public class CheckoutServiceImpl implements CheckoutService{
         // populate cart with cartItems
 
         Set<CartItem> cartItems = purchase.getCartItems();
-        cartItems.forEach(item -> cart.add(item));
+        cartItems.forEach(item -> {
+            cart.add(item);
+            item.getExcursions().forEach(excursion -> excursion.setVacation(item.getVacation()));
+        });
 
         //populate cart with customer
 
@@ -64,7 +69,7 @@ public class CheckoutServiceImpl implements CheckoutService{
         cart.ordered();
 
         // save to db
-        customerRepository.save(customer);
+        //customerRepository.save(customer);
         cartRepository.save(cart);
         // return response
         return new PurchaseResponse(orderTrackingNumber);

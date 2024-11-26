@@ -6,6 +6,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin("http://localhost:4200")
-@RepositoryRestResource(collectionResourceRel = "cartItem", path="cart-items")
+//@RepositoryRestResource(collectionResourceRel = "cartItem", path="cart-items")
 public interface CartItemRepository extends JpaRepository<CartItem,Long> {
 }

@@ -44,12 +44,12 @@ public class Excursion {
     private Date last_update;
 
     @ManyToOne
-    @JoinColumn(name = "vacation_id" ,nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "vacation_id")
     private Vacation vacation;
 
-    @ManyToMany
-    @JoinTable(name = "excursion_cartItem", joinColumns = @JoinColumn(name="excursion_id"), inverseJoinColumns = @JoinColumn(name= "cart_item_id"))
-    private Set<CartItem> cartItems =  new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL ,mappedBy = "excursions")
+    private Set<CartItem> cartitems =  new HashSet<>();
 
 
 }
